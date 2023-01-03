@@ -1,15 +1,33 @@
 package com.myt.mybatis.pojo;
 
+import java.util.List;
+
 public class Dept {
     private int id;
     private String name;
+    private List<Emp> emps;
 
     @Override
     public String toString() {
         return "Dept{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
+                ", emps=" + emps +
                 '}';
+    }
+
+    public List<Emp> getEmps() {
+        return emps;
+    }
+
+    public void setEmps(List<Emp> emps) {
+        this.emps = emps;
+    }
+
+    public Dept(int id, String name, List<Emp> emps) {
+        this.id = id;
+        this.name = name;
+        this.emps = emps;
     }
 
     public Dept(int id, String name) {

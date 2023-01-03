@@ -19,4 +19,29 @@
         select * from t_dept where dept_id = #{id}
     </select>
 
+    <resultMap id="deptEmpMap1" type="Dept">
+        <!--
+        column里的id为数据库里的字段，property里的id为pojo里的字段
+        -->
+        <id column="dept_id" property="id"></id>
+        <result column="dept_name" property="name"></result>
+        <!--
+        ofType：设置collection标签所处理的集合属性中存储数据的类型
+        -->
+        <collection property="emps" ofType="Emp">
+            <id column="emp_id" property="empId"></id>
+            <result column="emp_name" property="empName"></result>
+            <result column="age" property="age"></result>
+            <result column="gender" property="gender"></result>
+            <result column="dept_id" property="deptId"></result>
+        </collection>
+    </resultMap>
+    <!--Dept getDeptEmpByDid(@Param("did") int did);-->
+    <select id="getDeptEmpByDid" resultMap="deptEmpMap1">
+        select dept.*, emp.*
+        from t_dept dept
+        left join t_emp emp on dept.dept_id = emp.dept_id
+        where dept.dept_id = #{id}
+    </select>
+
 </mapper>
