@@ -18,6 +18,8 @@ public class Emp {
                 ", deptId=" + deptId +
                 ", dept=" + dept +
                 '}';
+
+
     }
 
     public Emp(int empId, String empName, int age, String gender, int deptId, Dept dept) {
