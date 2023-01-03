@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--映射文件-->
+<mapper namespace="com.myt.mybatis.mapper.UserMapper">
+    <!-- 1. mapper接口和映射文件保持两个一致，namespase和全类名保持一致，id和方法名保持一致-->
+    <!-- 2. 映射文件要写入到核心文件中  -->
+
+
+<!--   User getUserByUsername(String username); -->
+    <select id="getUserByUsername" resultType="User">
+<!--        select * from t_user where username = #{username}-->
+        select * from t_user where username = '${username}'
+    </select>
+
+<!--    User checkLogin(String username,String password);-->
+
+<!--    #{} 和 ${} 访问map的键，获取map的value值，两个参数回存储在map中 里面必须用 arg0,arg1或者param1，param2形式访问-->
+    <select id="checkLogin" resultType="User">
+<!--        select * from t_user where username = #{arg0} and password = #{arg1}-->
+        select * from t_user where username = '${param1}' and password = '${param2}'
+    </select>
+
+<!--     User checkLoginByMap(Map<String,Object> map);-->
+    <select id="checkLoginByMap" resultType="User">
+        select * from t_user where username = #{username} and password = #{password}
+    </select>
+
+<!--        void insertOne(User user);-->
+<!--    属性名只和get() set()方法有关，和成员变量无关-->
+    <insert id="insertOne" >
+        insert into t_user values(null,#{username},#{password},#{age},#{gender},#{email})
+    </insert>
+
+<!--        User checkLoginByParam(@Param("username") String username,@Param("password") String password);-->
+    <select id="checkLoginByParam" resultType="User">
+<!--        select * from t_user where username = #{username} and password = #{password}-->
+        select * from t_user where username = #{param1} and password = #{param2}
+    </select>
+
+</mapper>

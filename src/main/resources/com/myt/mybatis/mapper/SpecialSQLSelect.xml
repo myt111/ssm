@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--映射文件-->
+<mapper namespace="com.myt.mybatis.mapper.SpecialSQLSelect">
+    <!-- 1. mapper接口和映射文件保持两个一致，namespase和全类名保持一致，id和方法名保持一致-->
+    <!-- 2. 映射文件要写入到核心文件中  -->
+
+
+    <!--        List<User> getUserAll();-->
+
+
+    <!--    List<User> getUserByLike(@Param("mohu") String mohu);-->
+    <select id="getUserByLike" resultType="User">
+        <!--select * from t_user where username like concat('%',#{mohu},'%')-->
+       <!-- select * from t_user where username like '%${mohu}%'-->
+
+        select *from t_user where username like "%"#{mohu}"%"
+
+    </select>
+
+    <!--void deleteAllUser(@Param("ids") Integer ids);-->
+    <delete id="deleteAllUser" >
+        delete from t_user where id in (${ids})
+    </delete>
+
+    <!-- List<User> selectUserTable(@Param("tableName") String tableName);-->
+    <select id="selectUserTable" resultType="User">
+        select * from ${tableName}
+    </select>
+
+    <!--void insertUser(User user);-->
+    <!-- useGeneratedKeys表示使用自增主键，
+         keyProperty 将添加的自增主键为实体类参数的属性赋值，
+         为什么不作为方法的返回值？ 增删改返回的值是固定的，是受影响的行数，所有只能把返回的id赋值到实体类对象的属性参数中
+    -->
+    <insert id="insertUser" useGeneratedKeys="true" keyProperty="id">
+        insert into t_user values(null,#{username},#{password},${age},#{gender},#{email})
+    </insert>
+
+</mapper>

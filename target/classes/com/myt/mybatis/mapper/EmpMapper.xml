@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--映射文件-->
+<mapper namespace="com.myt.mybatis.mapper.EmpMapper">
+    <!-- 1. mapper接口和映射文件保持两个一致，namespase和全类名保持一致，id和方法名保持一致-->
+    <!-- 2. 映射文件要写入到核心文件中  -->
+
+   <!-- Emp getEmpById(@Param("empId") Integer empId);-->
+    <resultMap id="empResult" type="Emp">
+        <!--id 主键，result 普通字段 column： sql中字段，property： pojo类中的字段的属性名-->
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <result column="dept_id" property="deptId"></result>
+
+    </resultMap>
+
+    <select id="getEmpById" resultMap="empResult">
+        select * from t_emp where emp_id = #{empId}
+    </select>
+
+    <!-- 三种方式实现关系映射不一致
+            1. 设置全局配置（驼峰命名）
+            2. 通过sql起别名方式和pojo类中的名字一致
+            3. 通过resultMap方式自定义映射字段
+    -->
+
+    <resultMap id="resultEmpAndDeptOne" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <result column="dept_id" property="dept.id"></result>
+        <result column="dept_name" property="dept.name"></result>
+    </resultMap>
+
+
+
+    <resultMap id="resultEmpAndDept" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+
+        <!--
+        association 多对一关系
+        property 映射关系属性的属性名
+        javaType 设置处理的属性的类型
+        -->
+        <association property="dept" javaType="Dept">
+            <id column="dept_id" property="id"></id>
+            <result column="dept_name" property="name"></result>
+        </association>
+    </resultMap>
+    <!--Emp getEmpByIdAndDept(@Param("empId") Integer empId);-->
+    <select id="getEmpByIdAndDept"  resultMap="resultEmpAndDept" >
+        select * from t_emp left join
+        t_dept on t_emp.dept_id = t_dept.dept_id
+        where emp_id = #{empId}
+    </select>
+    <!-- 处理多对一关系
+    1. 级联
+    2. association处理多对一关系（处理实体类类型属性）
+    3. 分布查询
+    -->
+
+
+    <resultMap id="resultEmpAndDeptStep" type="Emp">
+        <id column="emp_id" property="empId"></id>
+        <result column="emp_name" property="empName"></result>
+        <result column="age" property="age"></result>
+        <result column="gender" property="gender"></result>
+        <result column="dept_id" property="deptId"></result>
+
+        <association property="dept"
+                     select="com.myt.mybatis.mapper.DeptMapper.getEmpByIdAndDeptStepTwo"
+                     column="dept_id">
+
+        </association>
+    </resultMap>
+    <!-- Emp getEmpByIdAndDeptStep(@Param("empId") Integer empId);-->
+    <select id="getEmpByIdAndDeptStep" resultMap="resultEmpAndDeptStep">
+        select * from t_emp where emp_id = #{empId}
+    </select>
+
+</mapper>
