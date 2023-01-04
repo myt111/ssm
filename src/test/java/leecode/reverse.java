@@ -12,8 +12,11 @@ public class reverse {
 
     @Test
     public void testReverse() {
-        String s1 = "abcd";
+        String s1 = "hello";
         char[] s = s1.toCharArray();
+
+        
+
         int len = s.length;
 
         // 冒泡排序，交换

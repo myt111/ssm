@@ -3,6 +3,8 @@ package com.myt.mybatis.mapper;
 import com.myt.mybatis.pojo.Emp;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface EmpMapper {
     Emp getEmpById(@Param("empId") Integer empId);
 
@@ -18,5 +20,14 @@ public interface EmpMapper {
     // Emp{empId=1, empName='张三', age=12, gender='男', deptId=1, dept=Dept{id=1, name='信息部', emps=null}}
 
 
+    /*
+    * 批量添加
+    * */
+    List<Emp> insertMoreEmp(@Param("emps") List<Emp> emps );
 
+    /*
+    * 批量删除
+    * */
+
+    void deleteMoreEmp(@Param("empIds") Integer[] empIds);
 }

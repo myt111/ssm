@@ -19,8 +19,11 @@
 
     </resultMap>
 
+    <sql id="empColumns">
+        emp_id,emp_name,age,gender,dept_id
+    </sql>
     <select id="getEmpById" resultMap="empResult">
-        select * from t_emp where emp_id = #{empId}
+        select <include refid="empColumns"></include> from t_emp where emp_id = #{empId}
     </select>
 
     <!-- 三种方式实现关系映射不一致
@@ -83,8 +86,43 @@
         </association>
     </resultMap>
     <!-- Emp getEmpByIdAndDeptStep(@Param("empId") Integer empId);-->
+
+
     <select id="getEmpByIdAndDeptStep" resultMap="resultEmpAndDeptStep">
         select * from t_emp where emp_id = #{empId}
     </select>
+
+
+    <!--
+        List<Emp> insertMoreEmp(@Param("emps") List<Emp> emps );
+
+    void deleteMoreEmp(@Param("empIds") Integer[] empIds);
+    -->
+
+    <insert id="insertMoreEmp">
+        insert into t_emp values
+        <foreach collection="emps" item="emp" separator=",">
+            (null,#{emp.empName},#{emp.age},#{emp.gender},null)
+        </foreach>
+    </insert>
+
+    <delete id="deleteMoreEmp1">
+        delete from t_emp where
+        <foreach collection="empIds" item="empId" separator="or">
+            emp_id = #{empId}
+        </foreach>
+
+    </delete>
+
+
+    <delete id="deleteMoreEmp2">
+        delete from t_emp where emp_id in(
+        <foreach collection="empIds" item="empId" separator="or" open="(" close=")">
+            #{empId}
+        </foreach>
+        )
+    </delete>
+
+
 
 </mapper>
