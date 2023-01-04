@@ -8,14 +8,12 @@ import java.util.List;
 
 import static java.util.Collections.swap;
 
-public class reverse {
+public class reverse0104 {
 
     @Test
     public void testReverse() {
         String s1 = "hello";
         char[] s = s1.toCharArray();
-
-        
 
         int len = s.length;
 
