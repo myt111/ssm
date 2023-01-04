@@ -28,7 +28,7 @@ public class EmpTest {
     public void empResultEmpAndDeptOne() {
         SqlSession sqlSession = SqlSessionUtil.getSqlSession();
         EmpMapper mapper = sqlSession.getMapper(EmpMapper.class);
-        Emp emp = mapper.getEmpByIdAndDeptStep(3);
+        Emp emp = mapper.getEmpByIdAndDeptStep(1);
         System.out.println(emp);
     }
 
